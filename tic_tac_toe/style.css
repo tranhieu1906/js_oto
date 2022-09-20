@@ -1,0 +1,17 @@
+#imgCar {
+  position: absolute;
+  z-index: 2;
+}
+.round {
+  margin-top: 300px;
+  height: 300px;
+  width: 100%;
+  background-color: red;
+}
+.stone{
+  position: absolute;
+}
+.coin{
+  position: absolute;
+  z-index: 1;
+}
