@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bouncy Ball</title>
+    <style>
+        canvas{
+            border: 1px solid black;
+        }
+    </style>
+  </head>
+
+  <body>
+    <canvas id="gameCanvas" width="500" height="500"></canvas>
+    <script>
+      // declare variables
+      let moveX = 20;
+      const FPS = 30;
+      var bs = 30;
+      var bx, by;
+      var xv, yv;
+      var canvas, context;
+
+      // load canvas
+      canvas = document.getElementById("gameCanvas");
+      context = canvas.getContext("2d");
+
+      // set up interval (game loop)
+      setInterval(update, 1000 / FPS);
+
+      // ball starting position
+      bx = canvas.width / 2; //200
+      by = canvas.height / 2; //150
+
+      // random ball starting speed (between 25 and 100 pps)
+      xv = Math.floor(Math.random() * 76 + 25) / FPS;
+      yv = Math.floor(Math.random() * 76 + 25) / FPS;
+
+      // random ball direction
+      if (Math.floor(Math.random() * 2) == 0) {
+        xv = -xv;
+      }
+      if (Math.floor(Math.random() * 2) == 0) {
+        yv = -yv;
+      }
+
+      // update function
+      function update() {
+        // move the ball
+        bx += xv;
+        by += yv;
+
+        // bounce the ball off each wall
+        if (bx - bs / 2 < 0 && xv < 0) {
+          xv = -xv;
+        }
+        if (bx + bs / 2 > canvas.width && xv > 0) {
+          xv = -xv;
+        }
+        if (by - bs / 2 < 0 && yv < 0) {
+          yv = -yv;
+        }
+        if (by + bs / 2 > canvas.height && yv > 0) {
+          yv = -yv;
+        }
+
+        // draw background and ball
+        context.fillStyle = "white";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.fillStyle = "red";
+        context.beginPath();
+        context.arc(bx - bs / 2, by - bs / 2, 20, 0, 2 * Math.PI);
+        context.fill();
+        createRectangle();
+        // context.fillRect(bx - bs / 2, by - bs / 2, bs, bs);
+      }
+      function Rectangle(x, y, width, height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+      }
+      function createRectangle() {
+        let circle = new Rectangle(moveX, 400, 100, 10);
+        context.fillStyle = "blue";
+        context.fillRect(circle.x, circle.y, circle.width, circle.height);
+      }
+      // di chuyen thanh bar
+
+      function moveSelection(evt) {
+        switch (evt.key) {
+          case "ArrowLeft":
+            keyless();
+            break;
+          case "ArrowRight":
+            keyring();
+            break;
+        }
+      }
+      function keyring() {
+        context.clearRect(moveX, 400, 100, 10);
+        context.fillStyle = "blue";
+        moveX += 10;
+        context.fillRect(moveX, 400, 100, 10);
+      }
+      function keyless() {
+        context.clearRect(moveX, 400, 100, 10);
+        moveX -= 10;
+        context.fillRect(moveX, 400, 100, 10);
+      }
+      window.addEventListener("keydown", moveSelection);
+    </script>
+  </body>
+</html>
